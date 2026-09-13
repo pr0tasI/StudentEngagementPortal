@@ -1,0 +1,302 @@
+@model IEnumerable<StudentEngagementPortal.Web.Models.Event>
+
+@{
+ViewData["Title"] = "Admin Dashboard";
+}
+
+<style>
+    body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1d1d1f;
+}
+    .admin-page {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .admin-header {
+        margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+    margin-bottom: 8px;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.6px;
+    color: #1d1d1f;
+}
+
+    .admin-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .events-title {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .event-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 25px;
+        margin: 18px 0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .event-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: #1d1d1f;
+}
+
+    .event-info {
+        margin: 8px 0;
+        color: #444;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .status-active {
+        background: #e8f5e9;
+        color: #217a2b;
+    }
+
+    .status-cancelled {
+        background: #fdeaea;
+        color: #b00000;
+    }
+
+    .admin-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    -button {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .action-button {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.action-delete {
+    background: #d70015;
+    color: white;
+    border-radius: 10px;
+}
+.action-signups {
+    background: #34a853;
+    color: white;
+    border-radius: 10px;
+}
+.action
+    .action-view {
+    background: #0071e3;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 500;
+}
+
+    .action-edit {
+    background: #555;
+    color: white;
+    border-radius: 10px;
+}
+
+
+    .action-cancel {
+    background: #cc0000;
+    color: white;
+    border-radius: 10px;
+}
+
+    .action-form {
+        display: inline;
+        margin: 0;
+    }
+
+    .home-button {
+        display: inline-block;
+        padding: 11px 20px;
+        border-radius: 8px;
+        background: #666;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 15px;
+    }
+
+    .home-button:hover {
+        background: #444;
+    }
+
+    .empty-message {
+        padding: 25px;
+        background: #f7f7f7;
+        border-radius: 10px;
+        color: #666;
+    }
+
+    @@media (max-width: 600px) {
+        .admin-page {
+            margin: 25px auto;
+        }
+
+        .event-card {
+            padding: 20px;
+        }
+
+        .admin-actions {
+            flex-direction: column;
+        }
+
+        .action-button {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="admin-page">
+
+
+<div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <p>Manage student engagement events.</p>
+</div>
+
+<hr />
+
+<h2 class="events-title">Events</h2>
+
+@if (!Model.Any())
+{
+    <div class="empty-message">
+        No events have been created yet.
+    </div>
+}
+else
+{
+    @foreach (var ev in Model)
+    {
+        <div class="event-card">
+
+            <h3>@ev.Title</h3>
+
+            <p class="event-info">
+                <strong>Category:</strong> @ev.Category
+            </p>
+
+            <p class="event-info">
+                <strong>Date:</strong>
+                @ev.EventDateTime.ToLocalTime().ToString("dd MMMM yyyy HH:mm")
+            </p>
+
+            <p class="event-info">
+                <strong>Location:</strong> @ev.Location
+            </p>
+
+            <p class="event-info">
+                <strong>Registrations:</strong>
+                @ev.RegisteredCount / @ev.Capacity
+            </p>
+
+            @if (ev.IsCancelled)
+            {
+                <span class="status status-cancelled">
+                    CANCELLED
+                </span>
+            }
+            else
+            {
+                <span class="status status-active">
+                    ACTIVE
+                </span>
+            }
+
+            <div class="admin-actions">
+
+                <a href="/Events/Details/@ev.Id"
+                   class="action-button action-view">
+                    View Event
+                </a>
+                <a href="/Admin/SignUps/@ev.Id"
+   class="action-button action-signups">
+    View Sign-ups
+</a>
+
+<a href="/Admin/DeleteEvent/@ev.Id"
+   class="action-button action-delete">
+    Delete Event
+</a>
+
+                @if (!ev.IsCancelled)
+                {
+                    <a href="/Admin/EditEvent/@ev.Id"
+                       class="action-button action-edit">
+                        Edit Event
+                    </a>
+
+                    <form asp-action="CancelEvent"
+                          asp-route-id="@ev.Id"
+                          method="post"
+                          class="action-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="action-button action-cancel">
+                            Cancel Event
+                        </button>
+
+                    </form>
+                }
+
+            </div>
+
+        </div>
+    }
+}
+
+<a href="/" class="home-button">
+    Home
+</a>
+
+
+</div>

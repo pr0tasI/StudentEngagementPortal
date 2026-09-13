@@ -1,0 +1,193 @@
+@model IEnumerable<StudentEngagementPortal.Web.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<style>
+    .events-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .events-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .events-header h1 {
+        margin: 0;
+    }
+
+    .filter-form {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .filter-form select {
+        padding: 9px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .event-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .event-card h2 {
+        margin-top: 0;
+    }
+
+    .event-info {
+        margin: 8px 0;
+    }
+
+    .event-button {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 5px;
+        background: #0066cc;
+        color: white;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .event-button:hover {
+        background: #004c99;
+        color: white;
+    }
+
+    .success-message {
+        background: #d4edda;
+        color: #155724;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .info-message {
+        background: #d1ecf1;
+        color: #0c5460;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="events-container">
+
+    <div class="events-header">
+        <h1>Upcoming Events</h1>
+
+        <form method="get" action="/Events/Index" class="filter-form">
+            <select name="category">
+                <option value="">All categories</option>
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    if (category == ViewBag.SelectedCategory)
+                    {
+                        <option value="@category" selected>@category</option>
+                    }
+                    else
+                    {
+                        <option value="@category">@category</option>
+                    }
+                }
+            </select>
+
+            <button type="submit" class="event-button">
+                Filter
+            </button>
+        </form>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="success-message">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="error-message">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="info-message">
+            @TempData["Info"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <p>No upcoming events are available.</p>
+    }
+    else
+    {
+        foreach (var ev in Model)
+        {
+            <div class="event-card">
+
+                <h2>@ev.Title</h2>
+
+                <div class="event-info">
+                    <strong>Category:</strong> @ev.Category
+                </div>
+
+                <div class="event-info">
+                    <strong>Location:</strong> @ev.Location
+                </div>
+
+                <div class="event-info">
+                    <strong>Date:</strong>
+                    @ev.EventDateTime.ToLocalTime().ToString("dd MMMM yyyy")
+                </div>
+
+                <div class="event-info">
+                    <strong>Time:</strong>
+                    @ev.EventDateTime.ToLocalTime().ToString("HH:mm")
+                </div>
+
+                <div class="event-info">
+                    <strong>Places:</strong>
+                    @ev.RegisteredCount / @ev.Capacity
+                </div>
+
+                <p>
+                    @ev.Description
+                </p>
+
+                <a href="/Events/Details/@ev.Id" class="event-button">
+                    View Details
+                </a>
+
+            </div>
+        }
+    }
+
+</div>

@@ -1,0 +1,233 @@
+@model StudentEngagementPortal.Web.Models.Event
+
+@{
+ViewData["Title"] = "Edit Event";
+}
+
+<style>
+    .admin-page {
+        max-width: 850px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .admin-header {
+        margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+        margin-bottom: 8px;
+        font-size: 34px;
+    }
+
+    .admin-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .event-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 35px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #0066cc;
+        box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .validation {
+        display: block;
+        color: #cc0000;
+        margin-top: 6px;
+        font-size: 14px;
+    }
+
+    .validation-summary {
+        color: #cc0000;
+        margin-bottom: 20px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 12px 22px;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 15px;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .button-primary {
+        background: #0066cc;
+        color: white;
+    }
+
+    .button-primary:hover {
+        background: #004c99;
+    }
+
+    .button-secondary {
+        background: #666;
+        color: white;
+    }
+
+    .button-secondary:hover {
+        background: #444;
+    }
+
+    @@media (max-width: 650px) {
+        .event-card {
+            padding: 22px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .button {
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="admin-page">
+
+
+<div class="admin-header">
+    <h1>Edit Event</h1>
+    <p>Update the details of this event.</p>
+</div>
+
+<div class="event-card">
+
+    <form asp-action="EditEvent" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="All" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title"
+                   class="form-control"
+                   placeholder="Enter event title" />
+            <span asp-validation-for="Title" class="validation"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description"
+                      class="form-control"
+                      placeholder="Describe the event..."></textarea>
+            <span asp-validation-for="Description" class="validation"></span>
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+                <label asp-for="Location"></label>
+                <input asp-for="Location"
+                       class="form-control"
+                       placeholder="e.g. Main Hall" />
+                <span asp-validation-for="Location" class="validation"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Category"></label>
+                <input asp-for="Category"
+                       class="form-control"
+                       placeholder="e.g. Social, Careers" />
+                <span asp-validation-for="Category" class="validation"></span>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+                <label asp-for="EventDateTime"></label>
+                <input asp-for="EventDateTime"
+                       type="datetime-local"
+                       class="form-control" />
+                <span asp-validation-for="EventDateTime" class="validation"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Capacity"></label>
+                <input asp-for="Capacity"
+                       type="number"
+                       min="1"
+                       max="10000"
+                       class="form-control" />
+                <span asp-validation-for="Capacity" class="validation"></span>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button type="submit" class="button button-primary">
+                Save Changes
+            </button>
+
+            <a href="/Admin" class="button button-secondary">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+</div>

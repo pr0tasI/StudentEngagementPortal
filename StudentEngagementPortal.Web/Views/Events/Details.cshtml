@@ -1,0 +1,374 @@
+@model StudentEngagementPortal.Web.Models.Event
+
+@{
+ViewData["Title"] = Model.Title;
+}
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                     "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: #1d1d1f;
+    }
+
+    .event-page {
+        max-width: 850px;
+        margin: 55px auto;
+        padding: 0 20px;
+    }
+
+    .event-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .event-header {
+        margin-bottom: 30px;
+    }
+
+    .event-category {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 14px;
+        border-radius: 20px;
+        background: #eef5ff;
+        color: #0071e3;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .event-header h1 {
+        margin: 0 0 12px;
+        font-size: 38px;
+        font-weight: 600;
+        letter-spacing: -0.8px;
+    }
+
+    .event-description {
+        color: #666;
+        font-size: 17px;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .event-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 30px 0;
+    }
+
+    .info-box {
+        padding: 18px;
+        background: #f7f7f7;
+        border-radius: 12px;
+    }
+
+    .info-label {
+        display: block;
+        margin-bottom: 6px;
+        color: #777;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .info-value {
+        font-size: 16px;
+        font-weight: 500;
+        color: #1d1d1f;
+    }
+
+    .status-box {
+        margin: 25px 0;
+        padding: 18px;
+        border-radius: 12px;
+        background: #f5f5f5;
+        text-align: center;
+    }
+
+    .status-box strong {
+        font-size: 18px;
+    }
+
+    .status-box p {
+        margin: 5px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .message {
+        margin-bottom: 20px;
+        padding: 13px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .message-success {
+        background: #eaf7ed;
+        color: #247a35;
+    }
+
+    .message-error {
+        background: #fdeaea;
+        color: #b00000;
+    }
+
+    .event-actions {
+display: flex;
+gap: 12px;
+margin-top: 30px;
+}
+
+.event-actions > form,
+.event-actions > a {
+flex: 1 1 0;
+width: 0;
+}
+
+.event-actions .button {
+width: 100%;
+}
+
+
+    .button {
+        flex: 1;
+        display: inline-block;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .button-primary {
+        background: #0071e3;
+        color: white;
+    }
+
+    .button-primary:hover {
+        background: #005bb5;
+        color: white;
+    }
+
+    .button-danger {
+        background: #d93025;
+        color: white;
+    }
+
+    .button-danger:hover {
+        background: #b9251c;
+        color: white;
+    }
+
+    .button-secondary {
+        background: #666;
+        color: white;
+    }
+
+    .button-secondary:hover {
+        background: #444;
+        color: white;
+    }
+
+    .cancelled {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #fdeaea;
+        color: #b00000;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    @@media (max-width: 600px) {
+        .event-page {
+            margin: 30px auto;
+        }
+
+        .event-card {
+            padding: 25px 20px;
+        }
+
+        .event-header h1 {
+            font-size: 30px;
+        }
+
+        .event-info {
+            grid-template-columns: 1fr;
+        }
+
+        .event-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="event-page">
+
+
+<div class="event-card">
+
+    <div class="event-header">
+
+        <span class="event-category">
+            @Model.Category
+        </span>
+
+        <h1>@Model.Title</h1>
+
+        <p class="event-description">
+            @Model.Description
+        </p>
+
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="message message-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="message message-error">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="message message-error">
+            @TempData["Info"]
+        </div>
+    }
+
+    <div class="event-info">
+
+        <div class="info-box">
+            <span class="info-label">Date & Time</span>
+            <span class="info-value">
+                @Model.EventDateTime.ToLocalTime().ToString("dd MMMM yyyy, HH:mm")
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="info-label">Location</span>
+            <span class="info-value">
+                @Model.Location
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="info-label">Capacity</span>
+            <span class="info-value">
+                @Model.Capacity students
+            </span>
+        </div>
+
+        <div class="info-box">
+            <span class="info-label">Spaces Remaining</span>
+            <span class="info-value">
+                @Model.SpacesRemaining
+            </span>
+        </div>
+
+    </div>
+
+    @if (Model.IsCancelled)
+    {
+        <div class="cancelled">
+            This event has been cancelled.
+        </div>
+    }
+    else
+    {
+        <div class="status-box">
+
+            @if (ViewBag.IsRegistered == true)
+            {
+                <strong>You are registered</strong>
+                <p>Your place at this event is confirmed.</p>
+            }
+            else if (Model.IsFull)
+            {
+                <strong>Event Full</strong>
+                <p>There are currently no spaces available.</p>
+            }
+            else
+            {
+                <strong>@Model.SpacesRemaining spaces available</strong>
+                <p>Register now to secure your place.</p>
+            }
+
+        </div>
+
+        <div class="event-actions">
+
+            @if (ViewBag.IsRegistered == true)
+            {
+                <form asp-controller="Events"
+                      asp-action="Unregister"
+                      method="post"
+                      style="flex: 1;">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <button type="submit"
+                            class="button button-danger"
+                            style="width: 100%;">
+                        Cancel Registration
+                    </button>
+
+                </form>
+            }
+            else if (!Model.IsFull)
+            {
+                <form asp-controller="Events"
+                      asp-action="Register"
+                      method="post"
+                      style="flex: 1;">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <button type="submit"
+                            class="button button-primary"
+                            style="width: 100%;">
+                        Register for Event
+                    </button>
+
+                </form>
+            }
+
+         <a asp-controller="Events"
+   asp-action="Index"
+   class="button button-secondary"
+   style="flex: 1;">
+    Back to Events
+</a>
+
+        </div>
+    }
+
+</div>
+
+</div>

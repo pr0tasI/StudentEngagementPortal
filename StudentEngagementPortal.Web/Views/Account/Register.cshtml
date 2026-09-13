@@ -1,0 +1,261 @@
+
+@model StudentEngagementPortal.Web.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Student Account";
+}
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                     "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: #1d1d1f;
+    }
+
+    .register-page {
+        max-width: 520px;
+        margin: 55px auto;
+        padding: 0 20px;
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+        margin-bottom: 10px;
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: -0.6px;
+    }
+
+    .register-header p {
+        margin: 0;
+        color: #666;
+        font-size: 16px;
+    }
+
+    .register-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 14px;
+        padding: 35px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background: #fff;
+        color: #1d1d1f;
+        font-family: inherit;
+        font-size: 15px;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #0071e3;
+        box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+    }
+
+    .validation {
+        display: block;
+        margin-top: 6px;
+        color: #cc0000;
+        font-size: 14px;
+    }
+
+    .validation-summary {
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        border-radius: 10px;
+        background: #fdeaea;
+        color: #b00000;
+        font-size: 14px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .button {
+        flex: 1;
+        display: inline-block;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .button-primary {
+        background: #0071e3;
+        color: white;
+    }
+
+    .button-primary:hover {
+        background: #005bb5;
+        color: white;
+    }
+
+    .button-secondary {
+        background: #666;
+        color: white;
+    }
+
+    .button-secondary:hover {
+        background: #444;
+        color: white;
+    }
+
+    @@media (max-width: 600px) {
+        .register-page {
+            margin: 30px auto;
+        }
+
+        .register-card {
+            padding: 25px 20px;
+        }
+
+        .register-header h1 {
+            font-size: 30px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="register-page">
+
+    <div class="register-header">
+        <h1>Create Student Account</h1>
+        <p>Register to access student events and support.</p>
+    </div>
+
+    <div class="register-card">
+
+        <form asp-controller="Account"
+              asp-action="Register"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+     class="validation-summary">
+</div>
+
+            <div class="form-group">
+
+                <label asp-for="FullName"></label>
+
+                <input asp-for="FullName"
+                       class="form-control"
+                       placeholder="Enter your full name"
+                       autocomplete="name" />
+
+                <span asp-validation-for="FullName"
+                      class="validation">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Email"></label>
+
+                <input asp-for="Email"
+                       type="email"
+                       class="form-control"
+                       placeholder="Enter your email address"
+                       autocomplete="email" />
+
+                <span asp-validation-for="Email"
+                      class="validation">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Password"></label>
+
+                <input asp-for="Password"
+                       type="password"
+                       class="form-control"
+                       placeholder="Create a password"
+                       autocomplete="new-password" />
+
+                <span asp-validation-for="Password"
+                      class="validation">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="ConfirmPassword"></label>
+
+                <input asp-for="ConfirmPassword"
+                       type="password"
+                       class="form-control"
+                       placeholder="Confirm your password"
+                       autocomplete="new-password" />
+
+                <span asp-validation-for="ConfirmPassword"
+                      class="validation">
+                </span>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="button button-primary">
+                    Register
+                </button>
+
+                <a href="/"
+                   class="button button-secondary">
+                    Back
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+

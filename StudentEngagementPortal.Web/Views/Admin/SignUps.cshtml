@@ -1,0 +1,207 @@
+@model IEnumerable<StudentEngagementPortal.Web.Models.Registration>
+
+@{
+    ViewData["Title"] = "Event Sign-ups";
+    var ev = ViewBag.Event as StudentEngagementPortal.Web.Models.Event;
+}
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                     "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: #1d1d1f;
+    }
+
+    .admin-page {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .admin-header {
+        margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+        margin-bottom: 8px;
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: -0.6px;
+    }
+
+    .admin-header p {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .signup-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 14px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .event-info {
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .event-info h2 {
+        margin: 0 0 10px;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .event-info p {
+        margin: 5px 0;
+        color: #666;
+    }
+
+    .signup-count {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
+
+    .signup-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .signup-table th {
+        text-align: left;
+        padding: 13px 10px;
+        border-bottom: 2px solid #ddd;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .signup-table td {
+        padding: 14px 10px;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+    }
+
+    .empty-message {
+        padding: 20px;
+        background: #f7f7f7;
+        border-radius: 10px;
+        color: #666;
+    }
+
+    .button {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 11px 20px;
+        border-radius: 10px;
+        background: #666;
+        color: white;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .button:hover {
+        background: #444;
+    }
+
+    @@media (max-width: 650px) {
+        .admin-page {
+            margin: 25px auto;
+        }
+
+        .signup-card {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .signup-table {
+            min-width: 600px;
+        }
+    }
+</style>
+
+<div class="admin-page">
+
+    <div class="admin-header">
+        <h1>Event Sign-ups</h1>
+        <p>View students registered for this event.</p>
+    </div>
+
+    <div class="signup-card">
+
+        @if (ev != null)
+        {
+            <div class="event-info">
+
+                <h2>@ev.Title</h2>
+
+                <p>
+                    <strong>Date:</strong>
+                    @ev.EventDateTime.ToLocalTime().ToString("dd MMMM yyyy HH:mm")
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    @ev.Location
+                </p>
+
+            </div>
+
+            <div class="signup-count">
+                Registered students: @Model.Count() / @ev.Capacity
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="empty-message">
+                    No students are currently registered for this event.
+                </div>
+            }
+            else
+            {
+                <table class="signup-table">
+
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Registered</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var registration in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @(registration.User?.FullName ?? "Unknown student")
+                                </td>
+
+                                <td>
+                                    @(registration.User?.Email ?? "No email")
+                                </td>
+
+                                <td>
+                                    @registration.RegisteredAtUtc.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+        }
+
+        <a href="/Admin" class="button">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
